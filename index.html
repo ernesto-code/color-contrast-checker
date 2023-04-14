@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Contrast Checker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="color-checker.js" charset="utf-8"></script>
+    <script src="scripts.js" charset="utf-8"></script>
+</head>
+<body>
+    
+    <div class="container">
+        <h3 class="text-muted mt-5">Color contrast checker:</h3>
+        
+        <form action="" class="form-container">
+                <div class="row">
+                    
+                    <div class="col-4">
+                        <h4 class=" text-muted">Input:</h4>
+                        <label for="textarea-color-input" class="form-label">Colors array</label>
+                        <textarea id="textarea-color-input" class="form-control" cols="30" rows="10"></textarea>
+                        <label for="background-color" class="form-label">Background color</label>
+                        <input id ='background-color'  class="form-control" type="text">
+                        <button class="btn btn-primary my-2" id="evaluate-btn">Evaluate colors</button>
+                    </div>
+                    <div class="col-4">
+                        <h4 class=" text-muted">Results:</h4>
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Fg color</th>
+                                <th scope="col">CCR</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+                              <tr>
+                                <td>#ffffff</td>
+                                <td>21.0</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+        </form>
+    </div>
+
+
+<script>
+
+    const colorsInput = document.getElementById('textarea-color-input')
+    const bgColor = document.getElementById('background-color').value
+    const tableBody = document.getElementById('tbody')
+    const evaluateBtn = document.getElementById('evaluate-btn')
+
+    const colorArray =  colorsInput.value.split(',')
+    let ratios = []
+
+    const evaluateColors = (array, bgColor)=>{
+        array.forEach(color=>{
+            console.log('color: '+ color +" - "+ "Bg color: "+bgColor)
+            checkColors(color, bgColor)
+            ratios.push(colorData)
+        })
+    }
+    
+evaluateBtn.addEventListener('click', (event)=>{
+
+    event.preventDefault()
+    console.log(colorArray,bgColor)
+
+    evaluateColors(colorArray,bgColor)
+})
+
+    
+
+    /*checkColors("ffffff", "000000")
+    console.log(colorData.contrast)*/
+</script>
+</body>
+</html>
