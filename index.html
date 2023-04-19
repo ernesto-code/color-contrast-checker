@@ -11,18 +11,28 @@
     <script src="scripts.js" charset="utf-8"></script>
 </head>
 <body>
-    
+
     <div class="container">
         <h3 class="text-muted mt-5">Color contrast checker:</h3>
         
         <form action="" class="form-container">
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-danger" role="alert">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20px" height="20px" fill="tomato">
+                            <path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/>
+                        </svg>
+                        Please enter the HEX colors values without spaces i.e. 'ffffff' for bg color and 'ffffff,000000,444444' for array. validation is not ready yet.
+                    </div>
+                </div>
+            </div>
                 <div class="row">
-                    
+
                     <div class="col-4">
                         <h4 class=" text-muted">Input:</h4>
                         <label for="textarea-color-input" class="form-label">Colors array</label>
                         <textarea id="textarea-color-input" class="form-control" cols="30" rows="10"></textarea>
-                        <label for="background-color" class="form-label">Background color</label>
+                        <label for="background-color" class="form-label">Background color(single color)</label>
                         <input id ='background-color'  class="form-control" type="text">
                         <button class="btn btn-primary my-2" id="evaluate-btn">Evaluate colors</button>
                     </div>
@@ -32,12 +42,26 @@
                             <thead>
                               <tr>
                                 <th scope="col">Fg color</th>
+                                <th scope="col">Bg color</th>
                                 <th scope="col">CCR</th>
                             </tr>
                         </thead>
                         <tbody id="tbody">
                               <tr>
-                                <td>#ffffff</td>
+                                <td>#ffffff
+                                    <span style="outline:black thin solid;outline-offset:-2px ;border-radius: 5px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20px" height="20px" fill="tomato" >
+                                            <path d="M0 96C0 60.7 28.7 32 64 32H384c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96z"/>
+                                        </svg>
+                                    </span>
+                                </td>
+                                <td>#ffffff
+                                    <span style="outline:black thin solid;outline-offset:-2px ;border-radius: 5px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20px" height="20px" fill="blue" >
+                                            <path d="M0 96C0 60.7 28.7 32 64 32H384c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96z"/>
+                                        </svg>
+                                    </span>
+                                </td>
                                 <td>21.0</td>
                               </tr>
                             </tbody>
@@ -51,27 +75,71 @@
 <script>
 
     const colorsInput = document.getElementById('textarea-color-input')
-    const bgColor = document.getElementById('background-color').value
+    const bgColorInput = document.getElementById('background-color')
+
     const tableBody = document.getElementById('tbody')
     const evaluateBtn = document.getElementById('evaluate-btn')
 
-    const colorArray =  colorsInput.value.split(',')
-    let ratios = []
+    let colorArray = null
+    let bgColor = null
+    let data = []
 
     const evaluateColors = (array, bgColor)=>{
-        array.forEach(color=>{
+        array.forEach(color =>{
             console.log('color: '+ color +" - "+ "Bg color: "+bgColor)
             checkColors(color, bgColor)
-            ratios.push(colorData)
+            data.push(colorData)
         })
     }
     
-evaluateBtn.addEventListener('click', (event)=>{
+    const generateRow = (fgColor,bgColor,ratio) =>{
+        return `<tr>
+                                <td>${fgColor}
+                                    <span style="outline:black thin solid;outline-offset:-2px ;border-radius: 5px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20px" height="20px" fill="#${fgColor}" >
+                                            <path d="M0 96C0 60.7 28.7 32 64 32H384c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96z"/>
+                                        </svg>
+                                    </span>
+                                </td>
+                                <td>${bgColor}
+                                    <span style="outline:black thin solid;outline-offset:-2px ;border-radius: 5px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20px" height="20px" fill="#${bgColor}" >
+                                            <path d="M0 96C0 60.7 28.7 32 64 32H384c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96z"/>
+                                        </svg>
+                                    </span>
+                                </td>
+                                <td>${ratio}</td>
+                              </tr>`
+    }
 
-    event.preventDefault()
-    console.log(colorArray,bgColor)
+    const generateTableHTML = () =>{
+        
+    }
 
-    evaluateColors(colorArray,bgColor)
+
+
+    evaluateBtn.addEventListener('click', (event)=>{
+
+        event.preventDefault()
+
+        colorArray = colorsInput.value.split(',')
+        bgColor = bgColorInput.value
+
+        console.log(colorArray,bgColor)
+
+        evaluateColors(colorArray,bgColor)
+
+        //Display results
+        let tableHTML = ''
+        data.forEach(dataObj =>{
+            tableHTML += generateRow(dataObj.foregroundHex, dataObj.backgroundHex, dataObj.contrast)
+        })
+        tableBody.innerHTML = tableHTML
+        
+
+
+
+
 })
 
     
