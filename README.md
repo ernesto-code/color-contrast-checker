@@ -1,2 +1,2 @@
-# color contrast checker
+# Multicolor contrast checker
  
